@@ -20,7 +20,7 @@ including an invalid one, which replaces it (see [known issues](#known-issues)).
 |---|---|
 | `rainbow` | Colour wheel along the strips, scrolling one step per frame (full cycle ~25.6 s). **Power-up default.** |
 | `redGrnChase` | Repeating 30-pixel block – 15 pixels fading up and down in red, then 15 in green – moving 1 pixel per frame (10 pixels/s) from the far end of strip 2 towards the far end of strip 1b |
-| `redGrnChase2` | Experimental triangle-wave red/green chase on pixels 0–95 only – see [known issues](#known-issues) |
+| `redGrnChase2` | 48-pixel red and green humps that fade up to 96/255 and back, alternating along all 210 pixels and scrolling 1 pixel per frame (10 pixels/s) from the far end of strip 1b towards the far end of strip 2 |
 | `redgrn` | Static alternating red and green pixels, each at 100/255 |
 | `purple` | Solid purple (255, 0, 255) |
 | `warm` | Solid warm white (255, 55, 15) |
@@ -66,8 +66,14 @@ wraps from pixel 209 back to 0 without a seam.
 
 ### `redGrnChase2` – `redGrnChaseSinNF()`
 
-A triangle-wave chase: red on pixels 0–47, a gap, green on 54–95. `cheapSin(x, 24)` rises from 0 to 24
-and falls back to 0 over 48 steps; ×4 gives a peak of 96. Still experimental – see below.
+A triangle-wave chase over the whole strip. For each pixel, `phase = pos + time`:
+
+- `4 * cheapSin(phase, 24)` gives the brightness – it rises from 0 to 96 and back to 0 every 48 pixels.
+- `(phase / 48) % 2` picks the colour – even humps are red, odd humps are green.
+
+Each hump begins and ends on a dark pixel, so red and green never blend. `time` increases by 1 each frame
+and wraps every 96 frames (one red + one green hump), so the motion is seamless. To change the hump size,
+edit `halfWidth`.
 
 ### `cchk` – custom colour
 
@@ -84,13 +90,11 @@ also writes pixels 1 and 2, which don't exist on a 1-pixel strip and are ignored
 1. **Unknown commands freeze the animation.** `udpHandler()` copies every message into `rxBuf`, valid or
    not. When nothing matches, no pattern is drawn, so the strips hold their last frame – a typo stops
    `rainbow` or `redGrnChase` mid-motion. The board still replies `OK:`, so the sender can't tell.
-2. **`redGrnChase2` only covers part of the strip.** Pixels 0–47 and 54–95 are drawn; 48–53 and 96–209
-   keep whatever the previous command left.
-3. **`cchk` input isn't validated.** It assumes exactly nine digits follow. Shorter messages read the
+2. **`cchk` input isn't validated.** It assumes exactly nine digits follow. Shorter messages read the
    string terminator and beyond, giving an unpredictable colour; numbers above 255 wrap (e.g. 300 → 44).
-4. **Full brightness.** `setBrightness(255)` is used, so `cchk255255255` asks for ~135 W – 90 % of the
+3. **Full brightness.** `setBrightness(255)` is used, so `cchk255255255` asks for ~135 W – 90 % of the
    150 W supply – and the most voltage drop on strip 1b.
-5. **Leftover code.** `rainbow(wait)` (blocking, strip 1 only) and `loopFinishTime` are unused; comments
+4. **Leftover code.** `rainbow(wait)` (blocking, strip 1 only) and `loopFinishTime` are unused; comments
    still say WS2812B, though `NEO_KHZ800` is the right setting for these WS2811 strips.
 
 ### Fixed
@@ -98,6 +102,8 @@ also writes pixels 1 and 2, which don't exist on a 1-pixel strip and are ignored
 - **`off` command added**, and `warm` is now its own command instead of the catch-all for unknown text.
 - **`redGrnChase2` no longer flashes** – `cheapSin()` returns `2*max - x` on the falling half (it used to
   go negative and wrap to bright values such as 252).
+- **`redGrnChase2` spans all three strips** – it used to draw only pixels 0–95; it now runs alternating
+  red and green humps along all 210 pixels.
 - **Pixel 209 is animated** – `rainbowNF()` loops with `<=` and `redGrnChaseNF()` uses
   `DECODE_NUM_PIXELS + 1`, which also removed a one-pixel seam in the chase.
 - **Serial Monitor spam removed** – the per-loop `Serial.println(strcmp(rxBuf, "hi"))` is commented out.
@@ -107,7 +113,6 @@ also writes pixels 1 and 2, which don't exist on a 1-pixel strip and are ignored
 ## Ideas for later
 
 - Validate commands in `udpHandler()`: keep the current pattern on unknown text and reply `ERR:`.
-- Draw the full strip in `redGrnChase2`.
 - Validate `cchk` input and clamp values to 0–255.
 - Remember the last command in flash so it survives a power cut.
 - Add a time-of-day schedule using NTP (`configTime()` in the arduino-pico core).

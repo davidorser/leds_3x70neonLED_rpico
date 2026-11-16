@@ -92,6 +92,7 @@ with the sum of the R, G and B values. `setBrightness(255)` is used, so these ar
 | `rainbow` | always sums to 255 | 33 % | ~45 W | 30 % |
 | `redgrn` | 100 on one channel | 13 % | ~18 W | 12 % |
 | `redGrnChase` | ≤ 100 on one channel, tapered | < 13 % | < 18 W | < 12 % |
+| `redGrnChase2` | 0–96 on one channel, averaging 48 | ~6 % | ~9 W | ~6 % |
 | `dim` | 1, 1, 1 | < 1 % | ~0.5 W | < 1 % |
 | `off` | 0, 0, 0 | 0 % | standby only | – |
 

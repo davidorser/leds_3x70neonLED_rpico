@@ -117,6 +117,7 @@ print(s.recvfrom(1024)[0].decode())                 # -> OK: redGrnChase
 |---|---|
 | `rainbow` | Scrolling rainbow (the power-up default) |
 | `redGrnChase` | Travelling red and green bands |
+| `redGrnChase2` | Wider red and green humps fading in and out as they travel |
 | `redgrn` | Alternating red/green pixels, static |
 | `purple` | Solid purple |
 | `warm` | Solid warm white |
@@ -162,7 +163,6 @@ These are documented, not yet fixed. Details are in [docs/COMMANDS.md](docs/COMM
 
 - **Unknown commands freeze the animation** – a typo stops `rainbow` or `redGrnChase` on its current
   frame, and the board still replies `OK:`.
-- **`redGrnChase2` is unfinished** – it only draws pixels 0–95; the rest keep the previous pattern.
 - **`cchk` isn't checked** – fewer than 9 digits gives a random colour; values over 255 wrap around.
 - **Full brightness** – `setBrightness(255)`; `purple` is ~90 W and `cchk255255255` ~135 W, 90 % of the
   supply (see [docs/HARDWARE.md](docs/HARDWARE.md#power-budget)).

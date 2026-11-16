@@ -299,19 +299,27 @@ int cheapSin(int x, int max) {
   }
 }
 
+// Triangle-wave chase across all three strips: 48-pixel "humps" that fade
+// 0 -> 96 -> 0, alternating red and green, scrolling 1 pixel per frame.
+// Each hump starts and ends at 0, so the colour change happens on a dark pixel.
 void redGrnChaseSinNF() {
-  static uint16_t time=0;
-  const int blank = 5;
-  for(int pos=0; pos < 48; pos++) {
-    int val = 4*cheapSin(pos+time,24);
-    setPixel_decodedStripLoc(pos,val,0,0);
+  static uint16_t time = 0;
+  const int halfWidth = 24;               // pixels from hump edge to peak
+  const int humpWidth = 2 * halfWidth;    // 48 pixels per hump
+  const int period = 2 * humpWidth;       // one red + one green hump = 96 pixels
+
+  for (int pos = 0; pos <= DECODE_NUM_PIXELS; pos++) {
+    int phase = pos + time;
+    int val = 4 * cheapSin(phase, halfWidth);   // 0..96
+    if ((phase / humpWidth) % 2 == 0) {
+      setPixel_decodedStripLoc(pos, val, 0, 0); // red hump
+    } else {
+      setPixel_decodedStripLoc(pos, 0, val, 0); // green hump
+    }
   }
-  for(int pos=49+blank; pos < (48*2); pos++) {
-    int val = 4*cheapSin(pos+time,24);
-    setPixel_decodedStripLoc(pos,0,val,0);
-  }
+
   time++;
-  if(time > 48*100) { time = 0; }
+  if (time >= period) { time = 0; }       // pattern repeats every 96 frames
 }
 
 void redGrnChaseNF() {
