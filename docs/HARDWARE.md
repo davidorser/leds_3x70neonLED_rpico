@@ -88,11 +88,12 @@ with the sum of the R, G and B values. `setBrightness(255)` is used, so these ar
 |---|---|---:|---:|---:|
 | `cchk255255255` (worst case) | 255, 255, 255 | 100 % | ~135 W | 90 % |
 | `purple` | 255, 0, 255 | 67 % | ~90 W | 60 % |
-| warm white (default / unknown text) | 255, 55, 15 | 42 % | ~57 W | 38 % |
+| `warm` | 255, 55, 15 | 42 % | ~57 W | 38 % |
 | `rainbow` | always sums to 255 | 33 % | ~45 W | 30 % |
 | `redgrn` | 100 on one channel | 13 % | ~18 W | 12 % |
 | `redGrnChase` | ≤ 100 on one channel, tapered | < 13 % | < 18 W | < 12 % |
 | `dim` | 1, 1, 1 | < 1 % | ~0.5 W | < 1 % |
+| `off` | 0, 0, 0 | 0 % | standby only | – |
 
 The Pico W and buck converter add only about 1–2 W. The listing warns that white turns yellowish at the
 far end of a 5 m strip from voltage drop and suggests feeding power at both ends; strip 1b, at the end of

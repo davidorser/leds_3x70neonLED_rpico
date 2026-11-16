@@ -16,7 +16,7 @@ The Pico W can be **re-flashed over the air (OTA)** from the Arduino IDE once th
 
 - **Rainbow at power-up** – a colour wheel scrolls along all 210 pixels until another command arrives.
 - **Red/green chase** – soft red and green bands, 15 pixels each, travel along the strips.
-- **Solid colours** – red/green alternating, purple, warm white, and a very dim night-light level.
+- **Solid colours** – red/green alternating, purple, warm white, a very dim night-light level, and off.
 - **Any colour** – `cchkRRRGGGBBB` (e.g. `cchk255100000`) sets every pixel to that RGB value.
 - **UDP control** – send the command word to port 5005; the board replies `OK: <message>`. See
   [docs/COMMANDS.md](docs/COMMANDS.md).
@@ -119,12 +119,14 @@ print(s.recvfrom(1024)[0].decode())                 # -> OK: redGrnChase
 | `redGrnChase` | Travelling red and green bands |
 | `redgrn` | Alternating red/green pixels, static |
 | `purple` | Solid purple |
+| `warm` | Solid warm white |
 | `dim` | Barely-on white night light |
+| `off` | All pixels off |
 | `cchkRRRGGGBBB` | Solid colour from three 3-digit values, e.g. `cchk000000255` for blue |
-| *anything else* | Solid warm white |
+| *anything else* | Nothing is redrawn – the strips freeze on their current frame |
 
-Commands are case-sensitive (no trailing newline). There is **no `off` command** – `off` falls through to
-warm white; use `dim` instead. Details are in [docs/COMMANDS.md](docs/COMMANDS.md).
+Commands are case-sensitive (no trailing newline). The board replies `OK:` even to commands it doesn't
+recognise. Details are in [docs/COMMANDS.md](docs/COMMANDS.md).
 
 ## Configuration
 
@@ -158,11 +160,10 @@ leds_3x70neonLED_rpico/
 
 These are documented, not yet fixed. Details are in [docs/COMMANDS.md](docs/COMMANDS.md#known-issues).
 
-- **No `off` command** – any unrecognised text, including `off`, turns the strips full warm white.
-- **`redGrnChase2` is unfinished** – it flashes bright wrong colours and only draws part of the strip.
-- **Last pixel skipped** – `rainbow` and `redGrnChase` never update pixel 209 (far end of strip 1b).
+- **Unknown commands freeze the animation** – a typo stops `rainbow` or `redGrnChase` on its current
+  frame, and the board still replies `OK:`.
+- **`redGrnChase2` is unfinished** – it only draws pixels 0–95; the rest keep the previous pattern.
 - **`cchk` isn't checked** – fewer than 9 digits gives a random colour; values over 255 wrap around.
-- **Serial Monitor spam** – a debug number is printed on every pass through `loop()`.
 - **Full brightness** – `setBrightness(255)`; `purple` is ~90 W and `cchk255255255` ~135 W, 90 % of the
   supply (see [docs/HARDWARE.md](docs/HARDWARE.md#power-budget)).
 

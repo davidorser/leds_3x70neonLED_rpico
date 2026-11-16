@@ -110,7 +110,7 @@ void loop() {
   int green = 55;
   int blue = 15;
   // Serial.println(rxBuf);
-  Serial.println(strcmp(rxBuf, "hi"));
+  // Serial.println(strcmp(rxBuf, "hi"));
 
   if (loopStartTime > nextRunTime1) {
     nextRunTime1 = loopStartTime + 100; // wait 100ms before updating LEDs again.
@@ -158,14 +158,19 @@ void loop() {
     for (int i = 0; i <= DECODE_NUM_PIXELS; i=i+1) {
       setPixel_decodedStripLoc(i, red, green, blue);
     }
-  } else {
+  } else if (strcmp(rxBuf, "warm")==0) { // warm white
     red = 255;
     green = 55;
     blue = 15;
     for (int i = 0; i <= DECODE_NUM_PIXELS; i=i+1) {
       setPixel_decodedStripLoc(i, red, green, blue);
     }
+  } else if (strcmp(rxBuf, "off")==0) {
+    for (int i = 0; i <= DECODE_NUM_PIXELS; i++) {
+      setPixel_decodedStripLoc(i, 0, 0, 0);
+    }
   }
+
     strip.show();
     strip2.show();
   } // end nextRunTime1 process
@@ -278,7 +283,7 @@ void setPixel_decodedStripLoc(int loc, int r, int g, int b) {
 
 void rainbowNF() {
   static uint16_t j=0; 
-  for (uint16_t i = 0; i < DECODE_NUM_PIXELS; i++) {
+  for (uint16_t i = 0; i <= DECODE_NUM_PIXELS; i++) {
     setPixel_decodedStripLoc(i, Wheel((i + j) & 255));
   }
   j = j + 1;
@@ -290,7 +295,7 @@ int cheapSin(int x, int max) {
   if(x<=max) {
     return x;
   } else {
-    return max-x;
+    return 2*max-x;
   }
 }
 
@@ -314,7 +319,7 @@ void redGrnChaseNF() {
   int pRed = 100;
   int pGrn = 100;
   int pBlu = 0;
-  int len = DECODE_NUM_PIXELS;
+  int len = DECODE_NUM_PIXELS+1;
   for(int i = 0; i < len; i=i+30) {
     setPixel_decodedStripLoc((i+j+0)%len , pRed/16, 0     , pBlu);
     setPixel_decodedStripLoc((i+j+1)%len , pRed/12, 0     , pBlu);
