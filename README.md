@@ -29,10 +29,10 @@ The Pico W can be **re-flashed over the air (OTA)** from the Arduino IDE once th
 
 | Item | Notes |
 |---|---|
-| Raspberry Pi Pico W | Board `rp2040:rp2040:rpipicow` |
-| 3 × ALITOVE addressable neon LED strip | 12 V, WS2811, 5 m, 420 LEDs / 70 pixels per strip (each pixel = 6 LEDs) |
-| GINRANS 12 V LED power supply | 150 W, 12.5 A, IP67, mains plug |
-| PlusRoc 12 V → 5 V buck converter | 5 V 3 A, micro-USB lead – powers the Pico W through its USB port |
+| [Raspberry Pi Pico W](https://www.raspberrypi.com/products/raspberry-pi-pico/) | Board `rp2040:rp2040:rpipicow` |
+| 3 × [ALITOVE addressable neon LED strip](https://www.amazon.com/dp/B0CDQ2LDQH) | 12 V, WS2811, 5 m, 420 LEDs / 70 pixels per strip (each pixel = 6 LEDs) – variant *Neon-5M-420LED-12V* |
+| [GINRANS 12 V LED power supply](https://www.amazon.com/dp/B0B6W2RMNF) | 150 W, 12.5 A, IP67, mains plug |
+| [PlusRoc 12 V → 5 V buck converter](https://www.amazon.com/dp/B09DGFR24W) | 5 V 3 A, micro-USB lead – powers the Pico W through its USB port (style *Micro USB Connector*) |
 
 ### Wiring summary
 

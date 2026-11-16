@@ -4,10 +4,10 @@
 
 | Part | Key specs | Role |
 |---|---|---|
-| **Raspberry Pi Pico W** | RP2040 + CYW43439 Wi‑Fi, 3.3 V logic | Controller |
-| **3 × ALITOVE addressable neon LED strip** (variant *Neon-5M-420LED-12V*, white FPCB, IP65) | 12 V DC, WS2811, 5 m, 420 LEDs per strip driven by **70 WS2811 ICs** (6 LEDs per IC), ~45 W per strip at full white per the listing | Lights – 210 addressable pixels in total |
-| **GINRANS LED power supply** | 100–240 V AC in, **12 V DC, 12.5 A (150 W)** out, constant voltage, IP67 | Powers the strips and the buck converter |
-| **PlusRoc DC‑DC buck converter** | 8–35 V in, **5 V, 3 A (15 W)** out, IP68, micro-USB output lead, 20 AWG input leads | Powers the Pico W from the 12 V supply |
+| **[Raspberry Pi Pico W](https://www.raspberrypi.com/products/raspberry-pi-pico/)** | RP2040 + CYW43439 Wi‑Fi, 3.3 V logic | Controller |
+| **3 × [ALITOVE addressable neon LED strip](https://www.amazon.com/dp/B0CDQ2LDQH)** (variant *Neon-5M-420LED-12V*, white FPCB, IP65) | 12 V DC, WS2811, 5 m, 420 LEDs per strip driven by **70 WS2811 ICs** (6 LEDs per IC), ~45 W per strip at full white per the listing | Lights – 210 addressable pixels in total |
+| **[GINRANS LED power supply](https://www.amazon.com/dp/B0B6W2RMNF)** | 100–240 V AC in, **12 V DC, 12.5 A (150 W)** out, constant voltage, IP67 | Powers the strips and the buck converter |
+| **[PlusRoc DC‑DC buck converter](https://www.amazon.com/dp/B09DGFR24W)** (style *Micro USB Connector*) | 8–35 V in, **5 V, 3 A (15 W)** out, IP68, micro-USB output lead, 20 AWG input leads | Powers the Pico W from the 12 V supply |
 
 Because each WS2811 drives a 6-LED segment, one "pixel" is a ~7 cm section of the neon strip. Patterns
 are coarse compared with a 5 V pixel strand – plan animations in terms of 70 pixels per strip.
