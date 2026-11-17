@@ -31,8 +31,13 @@ including an invalid one, which replaces it (see [known issues](#known-issues)).
 | *anything else* | Nothing is redrawn – the strips hold their current frame |
 
 Matching is exact and case-sensitive (`cchk` only checks the first 4 characters). A trailing newline –
-e.g. from `echo redgrn | nc -u …` – makes the command fail to match, so the strips freeze; use `echo -n`
-or the Python example in the README.
+e.g. from `echo redgrn | nc -u …` – makes the command fail to match, so the strips freeze; use `echo -n`,
+the Python example in the README, or the Windows tool
+[`udp_send`](https://github.com/davidorser/leds_winC_UDP_CLIprog), which never adds a newline:
+
+```bash
+udp_send 192.168.1.50 5005 cchk255100000
+```
 
 ## Pixel mapping
 

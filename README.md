@@ -103,7 +103,29 @@ is used for discovery).
 
 ### Changing the pattern
 
-Send a command as a UDP packet to port 5005. Python example:
+Send a command as a UDP packet to port 5005. On Windows, the easiest way is the companion command-line
+tool **[leds_winC_UDP_CLIprog](https://github.com/davidorser/leds_winC_UDP_CLIprog)** (`udp_send.exe`).
+Build it as described in its README, then run it with the controller's IP, the port and the command:
+
+```bash
+udp_send 192.168.1.50 5005 redGrnChase
+```
+
+It prints the board's reply:
+
+```
+Sent 11 bytes to 192.168.1.50:5005
+Reply 15B from 192.168.1.50:5005  "OK: redGrnChase"
+```
+
+That repo also has a `lights.bat` shortcut that stores the IP, so you can just type `lights redGrnChase`.
+To find the IP, look under **Tools → Port → Network ports** in the Arduino IDE, or run:
+
+```bash
+ping -4 djoLightsTriStrip.local
+```
+
+On any other system, Python works too:
 
 ```python
 import socket
